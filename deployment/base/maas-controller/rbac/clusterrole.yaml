@@ -157,10 +157,17 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - grid.praxis-proxy.io
+  resources:
+  - gridsites
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - inference.opendatahub.io
   resources:
   - externalmodels
-  - externalproviders
   verbs:
   - create
   - get
@@ -183,6 +190,18 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - inference.opendatahub.io
+  resources:
+  - externalproviders
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - kuadrant.io
   resources:

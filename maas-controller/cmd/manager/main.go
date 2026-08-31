@@ -685,6 +685,20 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Projects grid-admitted sites (grid.praxis-proxy.io/GridSite) into the MaaS
+	// catalog (ExternalProvider), so a site shows up in the MaaS UI. Single-writer:
+	// the grid operator owns GridSite, the maas-controller owns the catalog
+	// resources. GridSite is cluster-scoped, so the projection is written into the
+	// maas-api namespace.
+	if err := (&maas.GridProviderReconciler{
+		Client:          mgr.GetClient(),
+		Scheme:          mgr.GetScheme(),
+		TargetNamespace: maasAPINamespace,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "GridProvider")
+		os.Exit(1)
+	}
+
 	if err := mgr.Add(&managedNamespaceMonitor{
 		clientset:          clientset,
 		namespace:          maasSubscriptionNamespace,
